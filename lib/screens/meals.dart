@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:meal_app/model/meal.dart';
+import 'package:meal_app/widgets/main_drawer.dart';
 import 'package:meal_app/widgets/meal_item.dart';
 
 class MealsScreen extends StatelessWidget {
-  const MealsScreen({super.key, required this.title, required this.meals});
+  const MealsScreen({
+    super.key,
+    required this.title,
+    required this.meals,
+    required this.onToggleFavorite,
+    required this.isFavorite,
+  });
 
   final String title;
   final List<Meal> meals;
+  final void Function(Meal meal) onToggleFavorite;
+  final bool isFavorite;
 
   @override
   Widget build(BuildContext context) {
@@ -41,13 +50,14 @@ class MealsScreen extends StatelessWidget {
         itemCount: meals.length,
         itemBuilder: (ctx, index) {
           final meal = meals[index];
-          return MealItem(meal: meal);
+          return MealItem(meal: meal, onToggleFavorite: onToggleFavorite);
         },
       );
     }
 
     return Scaffold(
       appBar: AppBar(title: Text(title)),
+      drawer: isFavorite ? MainDrawer() : null,
       body: bodyContent,
     );
   }
